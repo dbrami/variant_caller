@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: variant_caller
+Version: 0.1.0
+Requires-Dist: pandas
+Requires-Dist: pysam
+Requires-Dist: biopython
