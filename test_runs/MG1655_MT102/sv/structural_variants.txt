@@ -1,0 +1,1 @@
+Type	RefPosition	Size	RefCoords	QueryCoords
