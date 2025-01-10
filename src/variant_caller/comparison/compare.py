@@ -18,14 +18,16 @@ class VariantComparator:
     def __init__(self, mummer_vcf: str, minimap_vcf: str):
         self.mummer_vcf = mummer_vcf
         self.minimap_vcf = minimap_vcf
-        
-    def get_variant_set(self, vcf_file: str) -> Set[Tuple[str, int, str, str]]:
-        """Get set of variants as (chrom, pos, ref, alt) tuples"""
+
+    def get_variant_set(self, vcf_file: str, case_insensitive: bool = False) -> Set[Tuple[str, int, str, str]]:
+        """Get set of variants as (chrom, pos, ref, alt) tuples, optionally case-insensitive"""
         variants = set()
         for variant in VCF(vcf_file):
-            variants.add((variant.CHROM, variant.POS, variant.REF, variant.ALT[0]))
+            ref = variant.REF.upper() if case_insensitive else variant.REF
+            alt = variant.ALT[0].upper() if case_insensitive else variant.ALT[0]
+            variants.add((variant.CHROM, variant.POS, ref, alt))
         return variants
-        
+
     def count_variants_by_type(self, vcf_file: str) -> Dict[str, int]:
         """Count variants by type (SNP, INS, DEL)"""
         counts = defaultdict(int)
@@ -38,29 +40,29 @@ class VariantComparator:
             else:
                 counts['INS'] += 1
         return dict(counts)
-        
+
     def get_variant_positions(self, vcf_file: str) -> List[int]:
         """Get list of variant positions"""
         return [variant.POS for variant in VCF(vcf_file)]
-        
+
     def plot_variant_distribution(self, mummer_pos: List[int], minimap_pos: List[int], 
-                                output: str, bin_size: int = 1000):
+                                  output: str, bin_size: int = 1000):
         """Plot variant position distributions"""
         plt.figure(figsize=(12, 6))
         plt.hist([mummer_pos, minimap_pos], bins=100, label=['MUMmer', 'minimap2'], 
-                alpha=0.5, density=True)
+                 alpha=0.5, density=True)
         plt.xlabel('Genome Position')
         plt.ylabel('Density')
         plt.title('Distribution of Variants Along Genome')
         plt.legend()
         plt.savefig(output)
         plt.close()
-        
+
     def compare_variants(self) -> Dict:
         """Compare variants between the two VCF files"""
         # Get variant sets
-        mummer_vars = self.get_variant_set(self.mummer_vcf)
-        minimap_vars = self.get_variant_set(self.minimap_vcf)
+        mummer_vars = self.get_variant_set(self.mummer_vcf, case_insensitive=True)
+        minimap_vars = self.get_variant_set(self.minimap_vcf, case_insensitive=True)
         
         # Count variants by type
         mummer_counts = self.count_variants_by_type(self.mummer_vcf)
@@ -85,7 +87,7 @@ class VariantComparator:
             'minimap_counts': minimap_counts,
             'positions': (mummer_pos, minimap_pos)
         }
-        
+
     def generate_report(self, output_prefix: str):
         """Generate comparison report with plots"""
         results = self.compare_variants()

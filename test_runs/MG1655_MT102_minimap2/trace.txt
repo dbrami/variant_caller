@@ -1,0 +1,4 @@
+task_id	hash	native_id	name	status	exit	submit	duration	realtime	%cpu	peak_rss	peak_vmem	rchar	wchar
+1	69/ed794e	1610	minimap_flow:MINIMAP_ALIGN (1)	COMPLETED	0	2025-01-09 22:50:33.556	1.2s	885ms	98.0%	12.8 MB	143.6 MB	8.9 MB	112.2 KB
+2	de/e10647	1628	minimap_flow:PAF_TO_VCF (1)	COMPLETED	0	2025-01-09 22:50:34.749	280ms	45ms	64.9%	10 MB	13.6 MB	5.6 MB	141 KB
+3	f7/abb1df	1653	minimap_flow:SORT_AND_NORMALIZE_VCF (1)	COMPLETED	0	2025-01-09 22:50:35.041	342ms	134ms	553.8%	6.2 MB	8.3 MB	7.9 MB	164.2 KB
