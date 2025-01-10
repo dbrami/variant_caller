@@ -63,8 +63,8 @@ def convert_snps_to_vcf(snps_file: str, reference_file: str, output_file: str):
                         ref_name,          # CHROM
                         pos,               # POS
                         ".",              # ID
-                        ref,              # REF
-                        alt,              # ALT
+                        ref.upper(),      # REF
+                        alt.upper(),      # ALT
                         ".",              # QUAL
                         "PASS",           # FILTER
                         "DP=30",          # INFO
@@ -99,4 +99,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
