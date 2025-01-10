@@ -152,7 +152,10 @@ process CONVERT_TO_VCF {
     
     script:
     """
-    convert_snps --input ${snps} --output variants.vcf --reference ${reference}
+    #!/usr/bin/env python3
+    from variant_caller.vcf_converter import convert_snps_to_vcf
+    
+    convert_snps_to_vcf("${snps}", "${reference}", "variants.vcf")
     """
 }
 
@@ -176,7 +179,7 @@ process MERGE_VARIANTS_TO_VCF {
 
 process SORT_AND_NORMALIZE_VCF {
     publishDir "${params.outdir}/final", mode: 'copy'
-    container params.containers.bcftools
+    container params.containers.variant_caller  // Changed from bcftools to variant_caller
     
     input:
     path vcf
@@ -188,44 +191,36 @@ process SORT_AND_NORMALIZE_VCF {
     
     script:
     """
-    # Get reference name from FASTA header
-    REF_NAME=\$(head -n1 ${reference} | sed 's/^>//' | cut -f1 -d' ')
-    REF_LENGTH=\$(grep -v "^>" ${reference} | tr -d '\n' | wc -c)
+    #!/usr/bin/env python3
     
-    # Create a VCF header with proper contig definition
-    cat > header.txt << EOH
-##fileformat=VCFv4.2
-##reference=MG1655.fna
-##contig=<ID=\${REF_NAME},length=\${REF_LENGTH}>
-##INFO=<ID=DP,Number=1,Type=Integer,Description="Total Depth">
-##INFO=<ID=TYPE,Number=1,Type=String,Description="Type of variant">
-##INFO=<ID=SVTYPE,Number=1,Type=String,Description="Type of structural variant">
-##INFO=<ID=SVLEN,Number=1,Type=Integer,Description="Length of structural variant">
-##INFO=<ID=END,Number=1,Type=Integer,Description="End position of structural variant">
-##ALT=<ID=DEL,Description="Deletion">
-##ALT=<ID=INS,Description="Insertion">
-##ALT=<ID=INV,Description="Inversion">
-##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
-EOH
-
-    # Fix contig name in VCF and combine with new header
-    grep -v "^#" ${vcf} | sed "s/MG1655.fna/\${REF_NAME}/" > variants.txt
+    from variant_caller.vcf_utils import VCFHandler
+    import logging
     
-    # Create header with proper tab characters
-    { 
-        cat header.txt
-        echo -e "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\tSAMPLE"
-        cat variants.txt
-    } > fixed.vcf
+    # Setup logging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
     
-    # Sort and normalize
-    bcftools sort fixed.vcf > sorted.vcf
-    bcftools norm -f ${reference} sorted.vcf > normalized.vcf
-    bgzip -f normalized.vcf
-    tabix -p vcf normalized.vcf.gz
+    try:
+        # Initialize VCF handler
+        handler = VCFHandler("${reference}")
+        
+        # Sort and normalize VCF
+        logger.info("Sorting and normalizing VCF file...")
+        handler.sort_and_normalize("${vcf}", "normalized.vcf")
+        
+        # Compress output
+        logger.info("Compressing output...")
+        import subprocess
+        subprocess.run(["bgzip", "-f", "normalized.vcf"], check=True)
+        subprocess.run(["tabix", "-p", "vcf", "normalized.vcf.gz"], check=True)
+        
+    except Exception as e:
+        logger.error(f"Error processing VCF: {e}")
+        raise
     """
 }
 
+// Workflow definitions
 workflow minimap_flow {
     take:
         reference

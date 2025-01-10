@@ -3,10 +3,14 @@ tests/test_sv_detector.py
 variant_caller/__init__.py
 variant_caller/paf_to_vcf.py
 variant_caller/sv_detector.py
+variant_caller/vcf_converter.py
 variant_caller/vcf_merger.py
+variant_caller/vcf_utils.py
 variant_caller.egg-info/PKG-INFO
 variant_caller.egg-info/SOURCES.txt
 variant_caller.egg-info/dependency_links.txt
 variant_caller.egg-info/entry_points.txt
 variant_caller.egg-info/requires.txt
 variant_caller.egg-info/top_level.txt
+variant_caller/comparison/__init__.py
+variant_caller/comparison/compare.py

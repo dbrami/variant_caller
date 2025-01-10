@@ -1,0 +1,17 @@
+Variant Caller Comparison Report
+==============================
+
+Variant Counts:
+MUMmer total variants: 371
+minimap2 total variants: 417
+Shared variants: 0
+MUMmer-only variants: 371
+minimap2-only variants: 417
+
+Variant Types:
+MUMmer:
+  SNP: 371
+minimap2:
+  DEL: 22
+  SNP: 377
+  INS: 18

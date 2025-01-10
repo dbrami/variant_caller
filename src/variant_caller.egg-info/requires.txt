@@ -1,3 +1,6 @@
 pandas
 pysam
 biopython
+cyvcf2
+matplotlib
+seaborn

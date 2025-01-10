@@ -2,10 +2,14 @@ FROM python:3.9-slim
 
 WORKDIR /app
 
-# Install system dependencies including procps for the 'ps' command
+# Install system dependencies including procps and tabix
 RUN apt-get update && apt-get install -y \
     build-essential \
+    zlib1g-dev \
+    libbz2-dev \
+    liblzma-dev \
     procps \
+    tabix \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
@@ -24,5 +28,3 @@ RUN pip install -e . && \
 
 # Set working directory for input/output
 WORKDIR /data
-
-# No need for ENTRYPOINT as we want to use the installed console scripts

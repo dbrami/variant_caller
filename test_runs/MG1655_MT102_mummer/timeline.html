@@ -206,13 +206,18 @@ $(function() {
 
   // Nextflow report data
   window.data = {
-    "elapsed": "3s",
-    "beginningMillis": 1736488112045,
-    "endingMillis": 1736488114997,
+    "elapsed": "10.3s",
+    "beginningMillis": 1736488072275,
+    "endingMillis": 1736488082613,
     "processes": [
-        {"label": "minimap_flow:MINIMAP_ALIGN (1)", "cached": false, "index": 0, "times": [{"starting_time": 1736488112487, "ending_time": 1736488112593}, {"starting_time": 1736488112593, "ending_time": 1736488113476, "label": "1.1s \/ 12.9 MB"}, {"starting_time": 1736488113476, "ending_time": 1736488113630}]},
-        {"label": "minimap_flow:PAF_TO_VCF (1)", "cached": false, "index": 1, "times": [{"starting_time": 1736488113649, "ending_time": 1736488113734}, {"starting_time": 1736488113734, "ending_time": 1736488113779, "label": "281ms \/ 10.2 MB"}, {"starting_time": 1736488113779, "ending_time": 1736488113930}]},
-        {"label": "minimap_flow:SORT_AND_NORMALIZE_VCF (1)", "cached": false, "index": 2, "times": [{"starting_time": 1736488113942, "ending_time": 1736488114032}, {"starting_time": 1736488114032, "ending_time": 1736488114149, "label": "352ms \/ 5.7 MB"}, {"starting_time": 1736488114149, "ending_time": 1736488114294}]}
+        {"label": "mummer_flow:NUCMER_ALIGN (1)", "cached": false, "index": 0, "times": [{"starting_time": 1736488072733, "ending_time": 1736488072817}, {"starting_time": 1736488072817, "ending_time": 1736488079974, "label": "7.4s \/ 84.4 MB"}, {"starting_time": 1736488079974, "ending_time": 1736488080156}]},
+        {"label": "mummer_flow:FILTER_DELTA (1)", "cached": false, "index": 1, "times": [{"starting_time": 1736488080175, "ending_time": 1736488080256}, {"starting_time": 1736488080256, "ending_time": 1736488080296, "label": "253ms \/ 6.2 MB"}, {"starting_time": 1736488080296, "ending_time": 1736488080428}]},
+        {"label": "mummer_flow:SHOW_COORDS (1)", "cached": false, "index": 2, "times": [{"starting_time": 1736488080441, "ending_time": 1736488080529}, {"starting_time": 1736488080529, "ending_time": 1736488080535, "label": "281ms \/ 2.6 MB"}, {"starting_time": 1736488080535, "ending_time": 1736488080722}]},
+        {"label": "mummer_flow:SHOW_SNPS (1)", "cached": false, "index": 3, "times": [{"starting_time": 1736488080445, "ending_time": 1736488080530}, {"starting_time": 1736488080530, "ending_time": 1736488080714, "label": "430ms \/ 7.2 MB"}, {"starting_time": 1736488080714, "ending_time": 1736488080875}]},
+        {"label": "mummer_flow:DETECT_STRUCTURAL_VARIANTS (1)", "cached": false, "index": 4, "times": [{"starting_time": 1736488080744, "ending_time": 1736488080826}, {"starting_time": 1736488080826, "ending_time": 1736488080885, "label": "271ms \/ 2.7 MB"}, {"starting_time": 1736488080885, "ending_time": 1736488081015}]},
+        {"label": "mummer_flow:CONVERT_TO_VCF (1)", "cached": false, "index": 5, "times": [{"starting_time": 1736488080885, "ending_time": 1736488080981}, {"starting_time": 1736488080981, "ending_time": 1736488081095, "label": "389ms \/ 5.8 MB"}, {"starting_time": 1736488081095, "ending_time": 1736488081274}]},
+        {"label": "mummer_flow:MERGE_VARIANTS_TO_VCF (1)", "cached": false, "index": 6, "times": [{"starting_time": 1736488081282, "ending_time": 1736488081375}, {"starting_time": 1736488081375, "ending_time": 1736488081422, "label": "260ms \/ 9.9 MB"}, {"starting_time": 1736488081422, "ending_time": 1736488081542}]},
+        {"label": "mummer_flow:SORT_AND_NORMALIZE_VCF (1)", "cached": false, "index": 7, "times": [{"starting_time": 1736488081552, "ending_time": 1736488081647}, {"starting_time": 1736488081647, "ending_time": 1736488081757, "label": "332ms \/ 5.7 MB"}, {"starting_time": 1736488081757, "ending_time": 1736488081884}]}
     ]
 }
 ;
