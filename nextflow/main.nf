@@ -18,6 +18,71 @@ if (!params.aligner in ['mummer', 'minimap2']) {
     error "Aligner must be either 'mummer' or 'minimap2'"
 }
 
+def helpMessage() {
+    log.info"""
+    Variant Calling Pipeline
+    =======================
+    A Nextflow pipeline for variant calling using either MUMmer or Minimap2.
+
+    Required Arguments:
+    --reference      Path to reference genome (FASTA)
+    --query         Path to query genome (FASTA)
+
+    Optional Arguments:
+    --aligner       Alignment tool to use (mummer/minimap2) [default: mummer]
+    --outdir        Output directory [default: results]
+    --detect_sv     Enable structural variant detection [default: false]
+    
+    SV Detection Options (only used when --detect_sv is enabled):
+    --min_sv_size   Minimum size for structural variants [default: 50]
+    --max_sv_size   Maximum size for structural variants [default: 100000]
+
+    Example Usage:
+    # Basic SNP calling with MUMmer
+    nextflow run main.nf --reference ref.fa --query query.fa
+
+    # Include structural variant detection
+    nextflow run main.nf --reference ref.fa --query query.fa --detect_sv
+
+    # Use minimap2 instead of MUMmer
+    nextflow run main.nf --reference ref.fa --query query.fa --aligner minimap2
+    """
+}
+
+// Parameter validation
+def validateParameters() {
+    // Show help if requested
+    if (params.help) {
+        helpMessage()
+        exit 0
+    }
+
+    // Check required parameters
+    if (!params.reference || !params.query) {
+        log.error "Please provide reference and query genome files using --reference and --query"
+        exit 1
+    }
+
+    // Validate aligner choice
+    if (!params.aligner in ['mummer', 'minimap2']) {
+        log.error "Aligner must be either 'mummer' or 'minimap2'"
+        exit 1
+    }
+
+    // Validate SV parameters if SV detection is enabled
+    if (params.detect_sv) {
+        if (params.min_sv_size <= 0) {
+            log.error "Minimum SV size must be greater than 0"
+            exit 1
+        }
+        if (params.max_sv_size <= params.min_sv_size) {
+            log.error "Maximum SV size must be greater than minimum SV size"
+            exit 1
+        }
+        log.info "SV detection enabled (size range: ${params.min_sv_size} - ${params.max_sv_size}bp)"
+    }
+}
+
 // MUMmer Processes
 process NUCMER_ALIGN {
     publishDir "${params.outdir}/nucmer", mode: 'copy'
