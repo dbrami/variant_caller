@@ -1,6 +1,6 @@
 # Variant Calling Pipeline
 
-A Nextflow pipeline for variant calling using MUMmer or Minimap2.
+A Nextflow pipeline for variant calling between two complete genomes using MUMmer or Minimap2.
 
 ## Features
 
