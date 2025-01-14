@@ -83,6 +83,11 @@ The pipeline uses the following Docker containers:
 - `macbio/minimap2-arm64`: Minimap2 aligner
 - `macbio/variant-caller`: Custom variant processing tools
 
+## Known Issues
+
+- All sequence files need to be within the './genomes' subdirectory
+- Compressed fasta files (BGZIP or other) are problematic
+
 ## License
 
 MIT
